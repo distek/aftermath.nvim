@@ -5,19 +5,6 @@ M.AllRequestedEvents = {}
 
 M.EventList = {}
 
-local function init()
-    for _, v in ipairs(M.AllRequestedEvents) do
-        vim.api.nvim_create_autocmd(v, {
-            pattern = { "*" },
-            group = "Aftermath",
-
-            callback = function(args)
-                table.insert(M.EventList, args.event)
-            end
-        })
-    end
-end
-
 function M.addHook(hook)
     table.insert(M.HookTable, hook)
 
@@ -48,8 +35,6 @@ local function findKey(key, table)
 end
 
 function M.setup(config)
-    init()
-
     vim.api.nvim_create_augroup("Aftermath", {
         clear = true
     })
@@ -74,6 +59,17 @@ function M.setup(config)
             end))
         end
     })
+
+    for _, v in ipairs(M.AllRequestedEvents) do
+        vim.api.nvim_create_autocmd(v, {
+            pattern = { "*" },
+            group = "Aftermath",
+
+            callback = function(args)
+                table.insert(M.EventList, args.event)
+            end
+        })
+    end
 end
 
 return M
