@@ -48,7 +48,7 @@ addHook({
                 break
             end
             if string.find(name, "term://*") then
-                vim.api.nvim_win_set_height(0, 20)
+                vim.api.nvim_win_set_height(v, 20)
             end
         end
     end
