@@ -9,7 +9,7 @@ local function init()
     for _, v in ipairs(M.AllRequestedEvents) do
         vim.api.nvim_create_autocmd(v, {
             pattern = { "*" },
-            group = "Hooker",
+            group = "Aftermath",
 
             callback = function(args)
                 table.insert(M.EventList, args.event)
@@ -50,7 +50,7 @@ end
 function M.setup(config)
     init()
 
-    vim.api.nvim_create_augroup("Hooker", {
+    vim.api.nvim_create_augroup("Aftermath", {
         clear = true
     })
 
@@ -59,7 +59,7 @@ function M.setup(config)
             "*"
         },
 
-        group = "Hooker",
+        group = "Aftermath",
 
         callback = function()
             local timer = vim.loop.new_timer()
