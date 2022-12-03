@@ -5,16 +5,32 @@ M.AllRequestedEvents = {}
 
 M.EventList = {}
 
+local function findKey(key, table)
+    for _, v in ipairs(table) do
+        if v == key then
+            return true
+        end
+    end
+    return false
+end
+
 function M.addHook(hook)
     table.insert(M.HookTable, hook)
 
     -- if hook's event is not already in M.AllRequestedEvents, add it
-    for _, v in ipairs(M.AllRequestedEvents) do
-        if v == hook.event then
-            return
+    if type(hook.event) == "string" then
+        if not findKey(hook.event, M.AllRequestedEvents) then
+            table.insert(M.AllRequestedEvents, hook.event)
+        end
+        return
+    end
+    if type(hook.event) == "table" then
+        for _, event in ipairs(hook.event) do
+            if not findKey(event, M.AllRequestedEvents) then
+                table.insert(M.AllRequestedEvents, event)
+            end
         end
     end
-    table.insert(M.AllRequestedEvents, hook.event)
 end
 
 function M.removeHook(id)
@@ -50,8 +66,17 @@ function M.setup(config)
             local timer = vim.loop.new_timer()
             timer:start(0, 50, vim.schedule_wrap(function()
                 for _, v in ipairs(M.HookTable) do
-                    if findKey(v.event, M.EventList) then
-                        v.run()
+                    if type(v.event) == "string" then
+                        if findKey(v.event, M.EventList) then
+                            v.run()
+                        end
+                    end
+                    if type(v.event) == "table" then
+                        for _, event in ipairs(v.event) do
+                            if findKey(event, M.EventList) then
+                                v.run()
+                            end
+                        end
                     end
                 end
 
