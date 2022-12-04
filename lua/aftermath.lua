@@ -43,15 +43,6 @@ function M.removeHook(id)
     end
 end
 
-local function findKey(key, table)
-    for _, v in ipairs(table) do
-        if v == key then
-            return true
-        end
-    end
-    return false
-end
-
 function M.setup(config)
     vim.api.nvim_create_augroup("Aftermath", {
         clear = true
