@@ -11,6 +11,7 @@ local function findKey(key, table)
             return true
         end
     end
+
     return false
 end
 
@@ -24,6 +25,7 @@ function M.addHook(hook)
         end
         return
     end
+
     if type(hook.event) == "table" then
         for _, event in ipairs(hook.event) do
             if not findKey(event, M.AllRequestedEvents) then
@@ -71,6 +73,7 @@ function M.setup(config)
                             v.run()
                         end
                     end
+
                     if type(v.event) == "table" then
                         for _, event in ipairs(v.event) do
                             if findKey(event, M.EventList) then
